@@ -48,7 +48,13 @@ class Commond extends Connection
         self::setColumns($columns);
         self::limit(1);
 
-        return self::conn()->query(self::getBuildQuery())->fetch_assoc();
+        $query = self::conn()->query(self::getBuildQuery());
+
+        if ($query) {
+            return $query->fetch_assoc();
+        }
+
+        return false;
     }
 
     public static function find($id)
