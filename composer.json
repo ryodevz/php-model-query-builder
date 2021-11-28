@@ -1,0 +1,17 @@
+{
+    "name": "ryodevz/php-model-query-builder",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Ryodevz\\PHPModelQueryBuilder\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "RyoDevz",
+            "email": "ytryo789@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
