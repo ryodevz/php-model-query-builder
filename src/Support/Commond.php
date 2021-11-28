@@ -74,6 +74,11 @@ class Commond extends Connection
         return self::conn()->query(self::deleteBuildQuery());
     }
 
+    public static function create(array $data)
+    {
+        return static::createBuildQuery($data);
+    }
+
     protected static function getRouteKeyName()
     {
         return 'id';
@@ -94,6 +99,22 @@ class Commond extends Connection
         return self::$query = "UPDATE `{" . static::$table . "}` SET {$build} " . self::$query;
     }
 
+    protected static function createBuildQuery($data)
+    {
+        $keys = [];
+        $values = [];
+
+        foreach ($data as $key => $value) {
+            $keys[] = $key;
+            $values[] = $value;
+        }
+
+        $build_keys = static::implodeKeys($keys);;
+        $build_values = static::implodeValues($values);;
+
+        return static::conn()->query("INSERT INTO `users` ({$build_keys}) VALUES ({$build_values})");
+    }
+
     protected static function deleteBuildQuery()
     {
         return "DELETE FROM `{" . static::$table . "}` " . self::$query;
@@ -109,6 +130,36 @@ class Commond extends Connection
         if (!empty($columns)) {
             return self::$columns = implode(',', $columns);
         }
+    }
+
+    protected static function implodeValues(array $data)
+    {
+        $build = '';
+        $count = count($data);
+
+        $loop = 1;
+        foreach ($data as $value) {
+            $build = $build . "'{$value}'" . ($count == $loop ? '' : ',');
+
+            $loop++;
+        }
+
+        return $build;
+    }
+
+    protected static function implodeKeys(array $data)
+    {
+        $build = '';
+        $count = count($data);
+
+        $loop = 1;
+        foreach ($data as $key) {
+            $build = $build . "`{$key}`" . ($count == $loop ? '' : ',');
+
+            $loop++;
+        }
+
+        return $build;
     }
 
     protected static function conn()
