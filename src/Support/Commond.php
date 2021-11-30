@@ -124,7 +124,7 @@ class Commond extends Connection
 
     protected function deleteBuildQuery()
     {
-        return "DELETE FROM `{" . $this->table . "}` " . $this->query;
+        return "DELETE FROM `" . $this->table . "` " . $this->query;
     }
 
     protected function getBuildQuery()
