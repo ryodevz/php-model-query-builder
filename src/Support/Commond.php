@@ -83,7 +83,7 @@ class Commond extends Connection
 
     public function create(array $data)
     {
-        return $this->createBuildQuery($data);
+        return $this->conn()->query($this->createBuildQuery($data));
     }
 
     protected function getRouteKeyName()
@@ -119,7 +119,7 @@ class Commond extends Connection
         $build_keys = $this->implodeKeys($keys);;
         $build_values = $this->implodeValues($values);;
 
-        return $this->conn()->query("INSERT INTO `" . $this->table . "` ({$build_keys}) VALUES ({$build_values})");
+        return "INSERT INTO `" . $this->table . "` ({$build_keys}) VALUES ({$build_values})";
     }
 
     protected function deleteBuildQuery()
