@@ -119,7 +119,7 @@ class Commond extends Connection
         $build_keys = $this->implodeKeys($keys);;
         $build_values = $this->implodeValues($values);;
 
-        return $this->conn()->query("INSERT INTO `users` ({$build_keys}) VALUES ({$build_values})");
+        return $this->conn()->query("INSERT INTO `" . $this->table . "` ({$build_keys}) VALUES ({$build_values})");
     }
 
     protected function deleteBuildQuery()
