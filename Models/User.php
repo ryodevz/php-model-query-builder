@@ -1,6 +1,6 @@
 <?php
 
-namespace Ryodevz\PHPModelQueryBuilder\Support\Models;
+namespace Models;
 
 use Ryodevz\PHPModelQueryBuilder\Support\Model;
 

@@ -4,7 +4,12 @@ namespace Ryodevz\PHPModelQueryBuilder\Support;
 
 class Model extends Commond
 {
-    protected static $table;
+    protected $table;
 
-    protected static $query;
+    protected $query;
+
+    public static function run()
+    {
+        return new static;
+    }
 }

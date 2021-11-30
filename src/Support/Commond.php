@@ -4,51 +4,51 @@ namespace Ryodevz\PHPModelQueryBuilder\Support;
 
 class Commond extends Connection
 {
-    protected static $table;
+    protected $table;
 
-    protected static $query;
+    protected $query;
 
-    protected static $columns = '*';
+    protected $columns = '*';
 
-    public static function orderBy(string $column, string $type = 'ASC')
+    public function orderBy(string $column, string $type = 'ASC')
     {
-        self::$query = self::$query . " ORDER BY `{$column}` {$type}";
+        $this->query = $this->query . " ORDER BY `{$column}` {$type}";
 
         return new static;
     }
 
-    public static function limit(int $limit)
+    public function limit(int $limit)
     {
-        self::$query = self::$query . " LIMIT {$limit}";
+        $this->query = $this->query . " LIMIT {$limit}";
 
         return new static;
     }
 
-    public static function orWhere(string $column, $value, string $operator = '=')
+    public function orWhere(string $column, $value, string $operator = '=')
     {
-        self::$query = self::$query . " OR `{$column}` {$operator} '$value'";
+        $this->query = $this->query . " OR `{$column}` {$operator} '$value'";
 
         return new static;
     }
 
-    public static function where(string $column, $value, string $operator = '=')
+    public function where(string $column, $value, string $operator = '=')
     {
-        self::$query = self::$query . " WHERE `{$column}` {$operator} '$value'";
+        $this->query = $this->query . " WHERE `{$column}` {$operator} '$value'";
 
         return new static;
     }
 
-    public static function update(array $data)
+    public function update(array $data)
     {
-        return self::conn()->query(self::updateBuildQuery($data));
+        return $this->conn()->query($this->updateBuildQuery($data));
     }
 
-    public static function first(array $columns = [])
+    public function first(array $columns = [])
     {
-        self::setColumns($columns);
-        self::limit(1);
+        $this->setColumns($columns);
+        $this->limit(1);
 
-        $query = self::conn()->query(self::getBuildQuery());
+        $query = $this->conn()->query($this->getBuildQuery());
 
         if ($query) {
             return $query->fetch_assoc();
@@ -57,34 +57,34 @@ class Commond extends Connection
         return false;
     }
 
-    public static function find($id)
+    public function find($id)
     {
-        return static::conn()->query("SELECT * FROM `" . static::$table . "` WHERE `" . static::$table . "`.`" . static::getRouteKeyName() . "` = " . $id)->fetch_assoc();
+        return $this->conn()->query("SELECT * FROM `" . $this->table . "` WHERE `" . $this->table . "`.`" . $this->getRouteKeyName() . "` = " . $id)->fetch_assoc();
     }
 
-    public static function get(array $columns = [])
+    public function get(array $columns = [])
     {
-        self::setColumns($columns);
+        $this->setColumns($columns);
 
-        return self::conn()->query(self::getBuildQuery())->fetch_all(MYSQLI_ASSOC);
+        return $this->conn()->query($this->getBuildQuery())->fetch_all(MYSQLI_ASSOC);
     }
 
-    public static function delete()
+    public function delete()
     {
-        return self::conn()->query(self::deleteBuildQuery());
+        return $this->conn()->query($this->deleteBuildQuery());
     }
 
-    public static function create(array $data)
+    public function create(array $data)
     {
-        return static::createBuildQuery($data);
+        return $this->createBuildQuery($data);
     }
 
-    protected static function getRouteKeyName()
+    protected function getRouteKeyName()
     {
         return 'id';
     }
 
-    protected static function updateBuildQuery($data)
+    protected function updateBuildQuery($data)
     {
         $build = '';
         $count = count($data);
@@ -96,10 +96,10 @@ class Commond extends Connection
             $loop++;
         }
 
-        return self::$query = "UPDATE `{" . static::$table . "}` SET {$build} " . self::$query;
+        return $this->query = "UPDATE `{" . $this->table . "}` SET {$build} " . $this->query;
     }
 
-    protected static function createBuildQuery($data)
+    protected function createBuildQuery($data)
     {
         $keys = [];
         $values = [];
@@ -109,30 +109,30 @@ class Commond extends Connection
             $values[] = $value;
         }
 
-        $build_keys = static::implodeKeys($keys);;
-        $build_values = static::implodeValues($values);;
+        $build_keys = $this->implodeKeys($keys);;
+        $build_values = $this->implodeValues($values);;
 
-        return static::conn()->query("INSERT INTO `users` ({$build_keys}) VALUES ({$build_values})");
+        return $this->conn()->query("INSERT INTO `users` ({$build_keys}) VALUES ({$build_values})");
     }
 
-    protected static function deleteBuildQuery()
+    protected function deleteBuildQuery()
     {
-        return "DELETE FROM `{" . static::$table . "}` " . self::$query;
+        return "DELETE FROM `{" . $this->table . "}` " . $this->query;
     }
 
-    protected static function getBuildQuery()
+    protected function getBuildQuery()
     {
-        return "SELECT " . self::$columns . " FROM " . static::$table . " " . self::$query;
+        return "SELECT " . $this->columns . " FROM " . $this->table . " " . $this->query;
     }
 
-    protected static function setColumns($columns)
+    protected function setColumns($columns)
     {
         if (!empty($columns)) {
-            return self::$columns = implode(',', $columns);
+            return $this->columns = implode(',', $columns);
         }
     }
 
-    protected static function implodeValues(array $data)
+    protected function implodeValues(array $data)
     {
         $build = '';
         $count = count($data);
@@ -147,7 +147,7 @@ class Commond extends Connection
         return $build;
     }
 
-    protected static function implodeKeys(array $data)
+    protected function implodeKeys(array $data)
     {
         $build = '';
         $count = count($data);
@@ -162,7 +162,7 @@ class Commond extends Connection
         return $build;
     }
 
-    protected static function conn()
+    protected function conn()
     {
         return (new Connection)->connection();
     }
