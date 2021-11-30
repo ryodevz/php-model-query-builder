@@ -10,32 +10,39 @@ class Commond extends Connection
 
     protected $columns = '*';
 
+    public function __construct($table = null)
+    {
+        if ($table) {
+            $this->table = $table;
+        }
+    }
+
     public function orderBy(string $column, string $type = 'ASC')
     {
         $this->query = $this->query . " ORDER BY `{$column}` {$type}";
 
-        return new static;
+        return $this;
     }
 
     public function limit(int $limit)
     {
         $this->query = $this->query . " LIMIT {$limit}";
 
-        return new static;
+        return $this;
     }
 
     public function orWhere(string $column, $value, string $operator = '=')
     {
         $this->query = $this->query . " OR `{$column}` {$operator} '$value'";
 
-        return new static;
+        return $this;
     }
 
     public function where(string $column, $value, string $operator = '=')
     {
         $this->query = $this->query . " WHERE `{$column}` {$operator} '$value'";
 
-        return new static;
+        return $this;
     }
 
     public function update(array $data)
