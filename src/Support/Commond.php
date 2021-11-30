@@ -103,7 +103,7 @@ class Commond extends Connection
             $loop++;
         }
 
-        return $this->query = "UPDATE `{" . $this->table . "}` SET {$build} " . $this->query;
+        return $this->query = "UPDATE `" . $this->table . "` SET {$build} " . $this->query;
     }
 
     protected function createBuildQuery($data)
